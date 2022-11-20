@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MessageForm from '../../components/MessageForm/MessageForm';
+import { Message } from '../../types';
+export const url = `http://146.185.154.90:8000/messages`;
 
 function App() {
+  const [messages, setMessages] = useState<Message[]>([]);
+
   return (
     <React.Fragment>
       <header>
