@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MessageForm from "../../components/MessageForm/MessageForm";
+import Messages from "../../components/Messages/Messages";
 import { Message } from "../../types";
 export const url = `http://146.185.154.90:8000/messages`;
 
@@ -10,9 +11,9 @@ function App() {
     let isCancelled = false;
     const interval = setInterval(async () => {
       const response = await fetch(
-        messages.length
-          ? `${url}?datetime=${messages[messages.length - 1].datetime}`
-          : url
+        `${url}?datetime=${
+          messages.length ? messages[messages.length - 1].datetime : ""
+        }`
       );
       if (!response.ok) throw new Error(`Response failed: ${response.status}`);
       const newMessages = await response.json();
@@ -20,12 +21,20 @@ function App() {
       if (!isCancelled) {
         setMessages((prev) => [...prev, ...newMessages]);
       }
-    }, 1000);
+    }, 3000);
     return () => {
       clearInterval(interval);
       isCancelled = true;
     };
-  }, []);
+  }, [messages]);
+
+  const sendMessage = async (message: string, author: string) => {
+    const body = new URLSearchParams();
+    body.set("message", message);
+    body.set("author", author);
+    const response = await fetch(url, { method: "post", body });
+    if (!response.ok) throw new Error(`Response failed: ${response.status}`);
+  }
 
   return (
     <React.Fragment>
@@ -41,9 +50,11 @@ function App() {
       <main>
         <div className="container py-3">
           <div className="row">
-            <MessageForm />
+            <MessageForm onSubmit={sendMessage} />
           </div>
-          <div className="row">Messages</div>
+          <div className="row">
+            <Messages messagesList={messages} />
+          </div>
         </div>
       </main>
     </React.Fragment>
