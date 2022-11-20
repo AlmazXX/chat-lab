@@ -1,4 +1,5 @@
 import React from 'react';
+import MessageForm from '../../components/MessageForm/MessageForm';
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
           <div className="row">
             Messages
           </div>
-          <div className="row">Message form</div>
+          <div className="row"><MessageForm/></div>
         </div>
       </main>
     </React.Fragment>
