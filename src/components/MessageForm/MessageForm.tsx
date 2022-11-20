@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { url } from "../../containers/App/App";
 import { MessageMutation } from "../../types";
 
-const MessageForm = () => {
+interface Props {
+  onSubmit: (message: string, author: string) => void;
+}
+
+const MessageForm: React.FC<Props> = ({ onSubmit }) => {
   const [message, setMessage] = useState<MessageMutation>({
     message: "",
     author: "",
@@ -16,14 +19,9 @@ const MessageForm = () => {
     setMessage((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onFormSubmit = async (e: React.FormEvent) => {
+  const onFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const body = new URLSearchParams();
-    body.set("message", message.message);
-    body.set("author", message.author);
-    const response = await fetch(url, { method: "post", body });
-
+    onSubmit(message.message, message.author);
     setMessage((prev) => ({ ...prev, message: "" }));
     setHasAuthor(true);
   };
