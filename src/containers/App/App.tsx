@@ -8,25 +8,21 @@ function App() {
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
-    let isCancelled = false;
+    let datetime = "";
     const interval = setInterval(async () => {
-      const response = await fetch(
-        `${url}?datetime=${
-          messages.length ? messages[messages.length - 1].datetime : ""
-        }`
-      );
-      if (!response.ok) throw new Error(`Response failed: ${response.status}`);
-      const newMessages = await response.json();
-
-      if (!isCancelled) {
+      try {
+        const response = await fetch(url + "?datetime=" + datetime);
+        const newMessages = await response.json();
+        datetime = newMessages[newMessages.length - 1].datetime;
         setMessages((prev) => [...prev, ...newMessages]);
+      } catch (error) {
+        console.error(error);
       }
-    }, 3000);
+    }, 2000);
     return () => {
       clearInterval(interval);
-      isCancelled = true;
     };
-  }, [messages]);
+  }, []);
 
   const sendMessage = async (message: string, author: string) => {
     const body = new URLSearchParams();
@@ -34,7 +30,7 @@ function App() {
     body.set("author", author);
     const response = await fetch(url, { method: "post", body });
     if (!response.ok) throw new Error(`Response failed: ${response.status}`);
-  }
+  };
 
   return (
     <React.Fragment>
