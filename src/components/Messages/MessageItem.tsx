@@ -1,11 +1,11 @@
-import React from "react";
+import { FC } from "react";
 import { Message } from "../../types";
 
 interface Props {
   message: Message;
 }
 
-const MessageItem: React.FC<Props> = ({ message }) => {
+const MessageItem: FC<Props> = ({ message }) => {
   return (
     <div className="row-1 my-2">
       <div className="bg-primary text-white d-inline-block px-4 py-3 rounded-2">

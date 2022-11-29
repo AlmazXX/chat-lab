@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MessageForm from "../../components/MessageForm/MessageForm";
 import Messages from "../../components/Messages/Messages";
 import { Message } from "../../types";
@@ -33,7 +33,7 @@ function App() {
   };
 
   return (
-    <React.Fragment>
+    <>
       <header>
         <nav className="navbar navbar-light bg-primary text-white">
           <div className="container">
@@ -53,7 +53,7 @@ function App() {
           </div>
         </div>
       </main>
-    </React.Fragment>
+    </>
   );
 }
 
